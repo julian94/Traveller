@@ -1,10 +1,5 @@
 <Solution>
-  <Folder Name="/Api/">
-    <Project Path="Api/Api.csproj" />
-  </Folder>
-  <Folder Name="/Test/" />
-  <Folder Name="/Test/Core/">
-    <Project Path="Test/Core/Test.Core.csproj" />
-  </Folder>
+  <Project Path="Api/Api.csproj" />
+  <Project Path="Test/Core/Test.Core.csproj" />
   <Project Path="Core/Core.csproj" />
 </Solution>
