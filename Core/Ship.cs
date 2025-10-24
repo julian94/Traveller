@@ -2,12 +2,13 @@
 
 public class Ship
 {
-    public Hull Hull { get; set; }
-    public List<Weapon> Weapons { get; set; }
+    public required Hull Hull { get; set; }
+    public required Armour Armour { get; set; }
+    public required List<Weapon> Weapons { get; set; }
 
     public void TakeDamage(int damage, IRoller roller)
     {
-        var realdamage = Math.Max(damage - Hull.Armour.Points, 0);
+        var realdamage = Math.Max(damage - Armour.Points, 0);
         Hull.Points -= realdamage;
         return;
     }
@@ -15,10 +16,15 @@ public class Ship
 
 public class Weapon
 {
-    public Guid ID { get; set; }
-    public int DamageDice { get; set; }
-    public bool Destructive { get; set; }
-    public int WeaponBonus { get; set; }
+    public required Guid ID { get; set; }
+
+    public required string Name { get; set; }
+
+    public required int DamageDice { get; set; }
+
+    public required bool Destructive { get; set; }
+
+    public required int WeaponBonus { get; set; }
     
     public AttackResult Attack(Ship target, int bonus, IRoller roller)
     {
@@ -46,13 +52,12 @@ public class Weapon
 
 public class Hull
 {
-    public int Points { get; set; }
-    public Armour Armour { get; set; }
+    public required int Points { get; set; }
 }
 
 public class Armour
 {
-    public int Points { get; set; }
+    public required int Points { get; set; }
 }
 
 public class AttackResult

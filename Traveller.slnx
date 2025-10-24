@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Api/Api.csproj" />
-  <Project Path="Test/Core/Test.Core.csproj" />
+  <Project Path="Cli/Cli.csproj" Id="671b8e92-435e-4208-b519-4cd591f2cc4b" />
   <Project Path="Core/Core.csproj" />
+  <Project Path="Test/Core/Test.Core.csproj" />
 </Solution>

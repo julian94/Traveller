@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Catalog;
 
 namespace Test.Core;
 
@@ -10,15 +11,18 @@ public class ShipTests
         Ship ship = new(){
             Hull = new(){
                 Points = 10,
-                Armour = new(){
-                    Points = 2,
-                }
+            },
+            Armour = new()
+            {
+                Points = 2,
             },
             Weapons = [
                 new(){
                     ID = new(),
+                    Name = "Pulse Laser",
                     DamageDice = 2,
                     Destructive = false,
+                    WeaponBonus = 2,
                 }
             ]
         };
@@ -29,51 +33,13 @@ public class ShipTests
     [Test]
     public void CanAttack()
     {
-        Ship attacker = new()
-        {
-            Hull = new()
-            {
-                Points = 10,
-                Armour = new()
-                {
-                    Points = 2,
-                }
-            },
-            Weapons = [
-                new(){
-                    ID = new(),
-                    DamageDice = 2,
-                    Destructive = false,
-                }
-            ]
-        };
-        Ship defender = new()
-        {
-            Hull = new()
-            {
-                Points = 10,
-                Armour = new()
-                {
-                    Points = 2,
-                }
-            },
-            Weapons = [
-                new(){
-                    ID = new(),
-                    DamageDice = 2,
-                    Destructive = false,
-                }
-            ]
-        };
+        Ship attacker = Ships.Scout;
+        Ship defender = Ships.FarTrader;
 
-        Assert.That(defender.Hull.Points, Is.EqualTo(10));
+        var defenderStartingHullPoints = defender.Hull.Points;
 
+        attacker.Weapons[0].Attack(defender, 4, new FakeRoller([6, 6]));
 
-        var weapon = attacker.Weapons[0];
-
-        FakeRoller roller = new([6, 6, 6, 6, 6, 6]);
-        weapon.Attack(defender, 4, roller);
-
-        Assert.That(defender.Hull.Points, Is.Not.EqualTo(10));
+        Assert.That(defender.Hull.Points, Is.Not.EqualTo(defenderStartingHullPoints));
     }
 }
