@@ -24,7 +24,7 @@ public class ShipTests
             ]
         };
 
-        Assert.That(ship.Hull.Points == 10);
+        Assert.That(ship.Hull.Points, Is.EqualTo(10));
     }
 
     [Test]

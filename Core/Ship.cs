@@ -144,7 +144,7 @@ public class Armour : ICrittable
     public required int Points { get; set; }
     public int CurrentSeverity { get; set; }
 
-    public void LosePoints(int points) => Points = Math.Min(Points - 1, 0);
+    public void LosePoints(int points) => Points = Math.Min(Points - points, 0);
 }
 
 public class AttackResult
