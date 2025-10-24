@@ -25,35 +25,41 @@ public class Ship
         }
     }
 
-    public int ResolveCrit(IRoller roller, int severity) => (roller.Roll(2)) switch
+    public void ResolveCrit(IRoller roller, int severity)
     {
-        2  => throw new NotImplementedException(),
-        3  => throw new NotImplementedException(),
-        4  => throw new NotImplementedException(),
-        5  => throw new NotImplementedException(),
-        6  => ArmourCrit(roller),
-        7  => HullCrit(roller, severity),
-        8  => throw new NotImplementedException(),
-        9  => throw new NotImplementedException(),
-        10 => throw new NotImplementedException(),
-        11 => throw new NotImplementedException(),
-        12 => throw new NotImplementedException(),
-        _  => throw new NotImplementedException(),
-    };
+        var roll = roller.Roll(2);
 
-    private int HullCrit(IRoller roller, int severity)
-    {
         for (int i = 0; i < severity; i++)
         {
-            Hull.CurrentSeverity++;
-            Hull.CurrentSeverity = Math.Min(Hull.CurrentSeverity, 6);
-            var damage = roller.Roll(Hull.CurrentSeverity);
-            HullCrit(roller, Hull.LoseHealth(damage));
+            if (roll == 6)
+            {
+                ArmourCrit(roller);
+            }
+            else if (roll == 7)
+            {
+                HullCrit(roller);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
-        return 0;
     }
 
-    public int ArmourCrit(IRoller roller)
+    private void HullCrit(IRoller roller)
+    {
+        Hull.CurrentSeverity++;
+        Hull.CurrentSeverity = Math.Min(Hull.CurrentSeverity, 6);
+        var damage = roller.Roll(Hull.CurrentSeverity);
+        var result = Hull.LoseHealth(damage);
+        
+        if (result > 0)
+        {
+            ResolveCrit(roller, result);
+        }
+    }
+
+    private void ArmourCrit(IRoller roller)
     {
         Armour.CurrentSeverity++;
         Armour.CurrentSeverity = Math.Min(Armour.CurrentSeverity, 6);
@@ -73,9 +79,8 @@ public class Ship
         else if (Armour.CurrentSeverity == 5 && Armour.CurrentSeverity == 6)
         {
             Armour.LosePoints(roller.Roll(2));
-            return 1;
+            Hull.SufferCrit(roller);
         }
-        return 0;
     }
 }
 
@@ -94,24 +99,34 @@ public class Weapon: ICrittable
     public int CurrentSeverity { get; set; }
 }
 
-public class Hull : ICrittable
+public class Hull: ICrittable
 {
-    public required int Points { get; set; }
+    public Hull(int points)
+    {
+        Points = points;
+        var tenPercentOfHullRoundedUp = Convert.ToInt32(Math.Ceiling(Points * 0.1));
+        CritTresholds = [];
+        for (int i = Points; i > 0; i -= tenPercentOfHullRoundedUp)
+        {
+            CritTresholds.Add(i);
+        }
+    }
+
+    public int Points { get; set; }
     public int CurrentSeverity { get; set ; }
 
     public int LoseHealth(int damage)
     {
-        var tresholds = CritTresholds();
         var oldTreshold = 0;
-        for (int i = 0; i > tresholds.Count; i++)
+        for (int i = 0; i > CritTresholds.Count; i++)
         {
-            if (Points <= tresholds[i]) oldTreshold = i;
+            if (Points <= CritTresholds[i]) oldTreshold = i;
         }
         Points -= damage;
         var newTreshold = 0;
-        for (int i = 0; i > tresholds.Count; i++)
+        for (int i = 0; i > CritTresholds.Count; i++)
         {
-            if (Points <= tresholds[i]) newTreshold = i;
+            if (Points <= CritTresholds[i]) newTreshold = i;
         }
 
         if (Points < 0) return 0;
@@ -119,16 +134,7 @@ public class Hull : ICrittable
         return (newTreshold - oldTreshold);
     }
 
-    public List<int> CritTresholds()
-    {
-        var tenPercentOfHullRoundedUp = Convert.ToInt32(Math.Ceiling(Points * 0.1));
-        List<int> result = [];
-        for (int i = Points; i > 0; i -= tenPercentOfHullRoundedUp)
-        {
-            result.Add(i);
-        }
-        return result;
-    }
+    private List<int> CritTresholds { get; init; }
 
     public int SufferCrit(IRoller roller)
     {

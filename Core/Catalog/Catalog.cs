@@ -25,10 +25,7 @@ public static class Ships
 {
     public static Ship Scout => new()
     {
-        Hull = new()
-        {
-            Points = 40,
-        },
+        Hull = new(40),
         Armour = new()
         {
             Points = 4,
@@ -39,10 +36,7 @@ public static class Ships
     };
     public static Ship FarTrader => new()
     {
-        Hull = new()
-        {
-            Points = 80,
-        },
+        Hull = new(80),
         Armour = new()
         {
             Points = 2,

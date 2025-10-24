@@ -6,9 +6,7 @@ public class ShipTests
     public void CanCreateShip()
     {
         Ship ship = new(){
-            Hull = new(){
-                Points = 10,
-            },
+            Hull = new(10),
             Armour = new()
             {
                 Points = 2,
