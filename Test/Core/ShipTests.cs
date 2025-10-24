@@ -1,7 +1,4 @@
-﻿using Core;
-using Core.Catalog;
-
-namespace Test.Core;
+﻿namespace Test.Core;
 
 public class ShipTests
 {
@@ -38,8 +35,34 @@ public class ShipTests
 
         var defenderStartingHullPoints = defender.Hull.Points;
 
-        attacker.Weapons[0].Attack(defender, 4, new FakeRoller([6, 6]));
-
+        defender.SufferAttack(new Attack(attacker.Weapons[0], 0, new FakeRoller([6, 6])), new FakeRoller([6, 6]));
         Assert.That(defender.Hull.Points, Is.Not.EqualTo(defenderStartingHullPoints));
+    }
+
+    [Test]
+    public void ShipsGetDestroyedAfterTakingTooMuchDamage()
+    {
+        Ship defender = Ships.Scout;
+        Assert.That(defender.Destroyed, Is.False);
+        defender.SufferAttack(new FakeAttack()
+        {
+            Damage = 2000,
+            PotentialCriticalHit = false,
+            Success = true,
+        }, new FakeRoller([6, 6]));
+        Assert.That(defender.Destroyed, Is.True);
+    }
+
+    [Test]
+    public void ShipsTakeDamageFromCriticalHitsToHull()
+    {
+        Ship defender = Ships.Scout;
+        defender.SufferAttack(new FakeAttack()
+        {
+            Damage = 6,
+            PotentialCriticalHit = true,
+            Success = true,
+        }, new FakeRoller([7, 1]));
+        Assert.That(defender.Hull.Points, Is.LessThan(38));
     }
 }
