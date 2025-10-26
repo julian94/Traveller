@@ -63,4 +63,49 @@ public class ShipTests
         }, new FakeRoller([7, 1]));
         Assert.That(defender.Hull.Points, Is.LessThan(38));
     }
+
+    [Test]
+    public void ShipsTakeCriticalHitsFromTooMuchDamage()
+    {
+        Ship defender = Ships.Scout;
+        var damage = 10;
+        var expectedHealthWithoutCrit = defender.Hull.Points - (damage - defender.Armour.Points);
+
+        defender.SufferAttack(new FakeAttack()
+        {
+            Damage = damage,
+            PotentialCriticalHit = false,
+            Success = true,
+        }, new FakeRoller([7, 1]));
+
+        Assert.That(defender.Hull.Points, Is.LessThan(expectedHealthWithoutCrit));
+    }
+
+
+    [Test]
+    [TestCase(1, 1)]
+    [TestCase(2, 1)]
+    [TestCase(3, 1)]
+    [TestCase(4, 1)]
+    [TestCase(5, 1)]
+    [TestCase(6, 1)]
+    public void ArmourCritsLowerArmourCorrectly(int newSeverity, int armourLoss)
+    {
+        Ship defender = Ships.Scout;
+        defender.Armour.CurrentSeverity = newSeverity - 1;
+        var startingArmour = defender.Armour.Points;
+
+        defender.SufferAttack(new FakeAttack()
+        {
+            Damage = 5,
+            PotentialCriticalHit = true,
+            Success = true,
+        }, new FakeRoller([6, armourLoss, 1]));
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(defender.Armour.Points, Is.EqualTo(startingArmour - armourLoss));
+            Assert.That(defender.Armour.CurrentSeverity, Is.EqualTo(newSeverity));
+        }
+    }
 }

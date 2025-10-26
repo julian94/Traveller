@@ -31,17 +31,53 @@ public class Ship
 
         for (int i = 0; i < severity; i++)
         {
-            if (roll == 6)
+            if (roll == 2) // Sensors
+            {
+                throw new NotImplementedException();
+            }
+            else if (roll == 3) // Power Plant
+            {
+                throw new NotImplementedException();
+            }
+            else if (roll == 4) // Fuel
+            {
+                throw new NotImplementedException();
+            }
+            else if (roll == 5) // Weapon
+            {
+                throw new NotImplementedException();
+            }
+            else if (roll == 6) // Armour
             {
                 ArmourCrit(roller);
             }
-            else if (roll == 7)
+            else if (roll == 7) // Hull
             {
                 HullCrit(roller);
             }
-            else
+            else if (roll == 8) // M-Drive
             {
                 throw new NotImplementedException();
+            }
+            else if (roll == 9) // Cargo
+            {
+                throw new NotImplementedException();
+            }
+            else if (roll == 10) // J-Drive
+            {
+                throw new NotImplementedException();
+            }
+            else if (roll == 11) // Crew
+            {
+                throw new NotImplementedException();
+            }
+            else if (roll == 12) // Computer
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("roll", roll, "You shouldn't get this number on 2d6.");
             }
         }
     }
@@ -76,148 +112,10 @@ public class Ship
         {
             Armour.LosePoints(roller.Roll(1));
         }
-        else if (Armour.CurrentSeverity == 5 && Armour.CurrentSeverity == 6)
+        else if (Armour.CurrentSeverity == 5 || Armour.CurrentSeverity == 6)
         {
             Armour.LosePoints(roller.Roll(2));
             Hull.SufferCrit(roller);
         }
     }
-}
-
-public class Weapon: ICrittable
-{
-    public required Guid ID { get; set; }
-
-    public required string Name { get; set; }
-
-    public required int DamageDice { get; set; }
-
-    public required bool Destructive { get; set; }
-
-    public required int WeaponBonus { get; set; }
-
-    public int CurrentSeverity { get; set; }
-}
-
-public class Hull: ICrittable
-{
-    public Hull(int points)
-    {
-        Points = points;
-        var tenPercentOfHullRoundedUp = Convert.ToInt32(Math.Ceiling(Points * 0.1));
-        CritTresholds = [];
-        for (int i = Points; i > 0; i -= tenPercentOfHullRoundedUp)
-        {
-            CritTresholds.Add(i);
-        }
-    }
-
-    public int Points { get; set; }
-    public int CurrentSeverity { get; set ; }
-
-    public int LoseHealth(int damage)
-    {
-        var oldTreshold = 0;
-        for (int i = 0; i > CritTresholds.Count; i++)
-        {
-            if (Points <= CritTresholds[i]) oldTreshold = i;
-        }
-        Points -= damage;
-        var newTreshold = 0;
-        for (int i = 0; i > CritTresholds.Count; i++)
-        {
-            if (Points <= CritTresholds[i]) newTreshold = i;
-        }
-
-        if (Points < 0) return 0;
-
-        return (newTreshold - oldTreshold);
-    }
-
-    private List<int> CritTresholds { get; init; }
-
-    public int SufferCrit(IRoller roller)
-    {
-        CurrentSeverity++;
-        CurrentSeverity = Math.Min(CurrentSeverity, 6);
-        var damage = roller.Roll(CurrentSeverity);
-        return LoseHealth(damage);
-    }
-}
-
-public class Armour : ICrittable
-{
-    public required int Points { get; set; }
-    public int CurrentSeverity { get; set; }
-
-    public void LosePoints(int points) => Points = Math.Min(Points - points, 0);
-}
-
-public class AttackResult
-{
-    public bool Success { get; init; }
-}
-
-public class Attack : IAttack
-{
-    private const int TargetNumber = 8;
-    private const int CriticalHitTreshold = 6;
-    public Attack(Weapon weapon, int externalBonus, IRoller roller)
-    {
-        var attackRoll = roller.Roll(2, weapon.WeaponBonus + externalBonus);
-        Damage = roller.Roll(weapon.DamageDice, attackRoll - TargetNumber);
-        Success = attackRoll >= TargetNumber;
-        PotentialCriticalHit = attackRoll >= TargetNumber + CriticalHitTreshold;
-    }
-
-    public bool Success { get; init; }
-    public bool PotentialCriticalHit { get; init; }
-    public int Damage { get; init; }
-}
-
-public interface IAttack
-{
-    int Damage { get; init; }
-    bool PotentialCriticalHit { get; init; }
-    bool Success { get; init; }
-}
-
-public class RollResult(int result, int target)
-{
-    public bool Success => Effect >= 0;
-    public int Result { get; init; } = result;
-    public int Effect { get; init; } = target - result;
-}
-
-public class Roller : IRoller
-{
-    private readonly Random _random = new();
-
-    public int D3() => _random.Next(1, 3);
-
-    private int Roll() => _random.Next(1, 6);
-
-    public int Roll(int dice, int bonus = 0)
-    {
-        var result = 0;
-        for (int i = 0; i < dice; i++)
-        {
-            result += Roll();
-        }
-        return result + bonus;
-    }
-    public RollResult Roll(int dice, int bonus, int target) => new(Roll(dice, bonus), target);
-}
-
-public interface IRoller
-{
-    public int D3();
-    public int Roll(int dice, int bonus = 0);
-
-    public RollResult Roll(int dice, int bonus, int target);
-}
-
-public interface ICrittable
-{
-    public int CurrentSeverity { get; set; }
 }
