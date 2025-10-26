@@ -13,4 +13,6 @@ public class Weapon : ICrittable
     public required int WeaponBonus { get; set; }
 
     public int CurrentSeverity { get; set; }
+
+    public RangeBand Range { get; set; }
 }
