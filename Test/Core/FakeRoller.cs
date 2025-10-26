@@ -7,7 +7,7 @@ internal class FakeRoller(List<int> rolls) : IRoller
     public RollResult Roll(int dice, int bonus, int target) => new(Roll(dice, bonus), target);
 }
 
-file class FakeRollerTests
+public class FakeRollerTests
 {
     [Test]
     public void FakeRollerIncrementsProperly()
