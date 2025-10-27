@@ -5,7 +5,10 @@ public class Ship
     public bool Destroyed => Hull.Points <= 0;
     public required Hull Hull { get; set; }
     public required Armour Armour { get; set; }
+    public required Sensors Sensors { get; set; }
     public required List<Weapon> Weapons { get; set; }
+
+    public int SensorProfileModifier => 0;
 
     public void SufferAttack(IAttack attack, IRoller roller)
     {
@@ -33,7 +36,8 @@ public class Ship
         {
             if (roll == 2) // Sensors
             {
-                throw new NotImplementedException();
+                var newSeverity = Sensors.CurrentSeverity + severity;
+                Sensors.CurrentSeverity = Math.Min(newSeverity, ICrittable.MaxSeverity);
             }
             else if (roll == 3) // Power Plant
             {
@@ -85,7 +89,7 @@ public class Ship
     private void HullCrit(IRoller roller)
     {
         Hull.CurrentSeverity++;
-        Hull.CurrentSeverity = Math.Min(Hull.CurrentSeverity, 6);
+        Hull.CurrentSeverity = Math.Min(Hull.CurrentSeverity, ICrittable.MaxSeverity);
         var damage = roller.Roll(Hull.CurrentSeverity);
         var result = Hull.LoseHealth(damage);
         
@@ -98,7 +102,7 @@ public class Ship
     private void ArmourCrit(IRoller roller)
     {
         Armour.CurrentSeverity++;
-        Armour.CurrentSeverity = Math.Min(Armour.CurrentSeverity, 6);
+        Armour.CurrentSeverity = Math.Min(Armour.CurrentSeverity, ICrittable.MaxSeverity);
 
         if (Armour.CurrentSeverity == 1)
         {

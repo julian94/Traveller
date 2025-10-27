@@ -2,7 +2,6 @@
 
 public enum RangeBand
 {
-    Unknown,
     None,
     Adjacent,
     Close,
@@ -11,6 +10,7 @@ public enum RangeBand
     Long,
     VeryLong,
     Distant,
+    Unknown,
 }
 
 public static class RangeBandConstants

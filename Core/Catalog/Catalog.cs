@@ -1,6 +1,6 @@
 ﻿namespace Core.Catalog;
 
-public static class Weapons
+public static class WeaponCatalog
 {
     public static Weapon Beam => new()
     {
@@ -21,7 +21,31 @@ public static class Weapons
     };
 }
 
-public static class Ships
+public static class SensorsCatalog
+{
+    public static Sensors Basic => new()
+    {
+        InherentModifier = -4,
+    };
+    public static Sensors Civilian => new()
+    {
+        InherentModifier = -2,
+    };
+    public static Sensors Military => new()
+    {
+        InherentModifier = 0,
+    };
+    public static Sensors Improved => new()
+    {
+        InherentModifier = 1,
+    };
+    public static Sensors Advanced => new()
+    {
+        InherentModifier = 2,
+    };
+}
+
+public static class ShipCatalog
 {
     public static Ship Scout => new()
     {
@@ -30,8 +54,9 @@ public static class Ships
         {
             Points = 4,
         },
+        Sensors = SensorsCatalog.Military,
         Weapons = [
-            Weapons.Beam,
+            WeaponCatalog.Beam,
         ]
     };
     public static Ship FarTrader => new()
@@ -41,9 +66,10 @@ public static class Ships
         {
             Points = 2,
         },
+        Sensors = SensorsCatalog.Civilian,
         Weapons = [
-            Weapons.Pulse,
-            Weapons.Pulse,
+            WeaponCatalog.Pulse,
+            WeaponCatalog.Pulse,
         ]
     };
 }

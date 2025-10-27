@@ -5,11 +5,15 @@ public class ShipTests
     [Test]
     public void CanCreateShip()
     {
-        Ship ship = new(){
+        Ship ship = new() {
             Hull = new(10),
             Armour = new()
             {
                 Points = 2,
+            },
+            Sensors = new()
+            {
+                InherentModifier = 0,
             },
             Weapons = [
                 new(){
@@ -28,19 +32,20 @@ public class ShipTests
     [Test]
     public void CanAttack()
     {
-        Ship attacker = Ships.Scout;
-        Ship defender = Ships.FarTrader;
+        Ship attacker = ShipCatalog.Scout;
+        Ship defender = ShipCatalog.FarTrader;
+        Crew gunner = SpacePortBar.Jimbo;
 
         var defenderStartingHullPoints = defender.Hull.Points;
 
-        defender.SufferAttack(new Attack(attacker.Weapons[0], 0, new FakeRoller([6, 6])), new FakeRoller([6, 6]));
+        defender.SufferAttack(new Attack(attacker.Weapons[0], gunner, 0, new FakeRoller([6, 6])), new FakeRoller([6, 6]));
         Assert.That(defender.Hull.Points, Is.Not.EqualTo(defenderStartingHullPoints));
     }
 
     [Test]
     public void ShipsGetDestroyedAfterTakingTooMuchDamage()
     {
-        Ship defender = Ships.Scout;
+        Ship defender = ShipCatalog.Scout;
         Assert.That(defender.Destroyed, Is.False);
         defender.SufferAttack(new FakeAttack()
         {
@@ -54,7 +59,7 @@ public class ShipTests
     [Test]
     public void ShipsTakeDamageFromCriticalHitsToHull()
     {
-        Ship defender = Ships.Scout;
+        Ship defender = ShipCatalog.Scout;
         defender.SufferAttack(new FakeAttack()
         {
             Damage = 6,
@@ -67,7 +72,7 @@ public class ShipTests
     [Test]
     public void ShipsTakeCriticalHitsFromTooMuchDamage()
     {
-        Ship defender = Ships.Scout;
+        Ship defender = ShipCatalog.Scout;
         var damage = 10;
         var expectedHealthWithoutCrit = defender.Hull.Points - (damage - defender.Armour.Points);
 
@@ -91,7 +96,7 @@ public class ShipTests
     [TestCase(6, 1)]
     public void ArmourCritsLowerArmourCorrectly(int newSeverity, int armourLoss)
     {
-        Ship defender = Ships.Scout;
+        Ship defender = ShipCatalog.Scout;
         defender.Armour.CurrentSeverity = newSeverity - 1;
         var startingArmour = defender.Armour.Points;
 

@@ -2,11 +2,11 @@
 
 public class Attack : IAttack
 {
-    private const int TargetNumber = 8;
+    private const int TargetNumber = Difficulties.Average;
     private const int CriticalHitTreshold = 6;
-    public Attack(Weapon weapon, int externalBonus, IRoller roller)
+    public Attack(Weapon weapon, Crew gunner, int externalBonus, IRoller roller)
     {
-        var attackRoll = roller.Roll(2, weapon.WeaponBonus + externalBonus);
+        var attackRoll = roller.Roll(2, weapon.WeaponBonus + gunner.WeaponSkill + externalBonus);
         Damage = roller.Roll(weapon.DamageDice, attackRoll - TargetNumber);
         Success = attackRoll >= TargetNumber;
         PotentialCriticalHit = attackRoll >= TargetNumber + CriticalHitTreshold;
