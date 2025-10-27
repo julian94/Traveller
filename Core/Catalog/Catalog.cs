@@ -25,22 +25,43 @@ public static class SensorsCatalog
 {
     public static Sensors Basic => new()
     {
+        Capabilities = 
+            SensorCapability.Lidar &
+            SensorCapability.Radar,
         InherentModifier = -4,
     };
     public static Sensors Civilian => new()
     {
+        Capabilities =
+            SensorCapability.Lidar &
+            SensorCapability.Radar,
         InherentModifier = -2,
     };
     public static Sensors Military => new()
     {
+        Capabilities =
+            SensorCapability.Lidar &
+            SensorCapability.Radar &
+            SensorCapability.Jammers,
         InherentModifier = 0,
     };
     public static Sensors Improved => new()
     {
+        Capabilities =
+            SensorCapability.Lidar &
+            SensorCapability.Radar &
+            SensorCapability.Jammers &
+            SensorCapability.Densitometer,
         InherentModifier = 1,
     };
     public static Sensors Advanced => new()
     {
+        Capabilities =
+            SensorCapability.Lidar &
+            SensorCapability.Radar &
+            SensorCapability.Jammers &
+            SensorCapability.Densitometer &
+            SensorCapability.NeuralActivitySensor,
         InherentModifier = 2,
     };
 }

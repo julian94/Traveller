@@ -13,6 +13,7 @@ public class ShipTests
             },
             Sensors = new()
             {
+                Capabilities = SensorCapability.Lidar & SensorCapability.Radar,
                 InherentModifier = 0,
             },
             Weapons = [

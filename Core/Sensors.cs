@@ -4,6 +4,8 @@ public class Sensors : ICrittable
 {
     public int CurrentSeverity { get; set; } = 0;
 
+    public required SensorCapability Capabilities { get; init; }
+
     public int InherentModifier { get; init; }
 
     public int Modifier => InherentModifier - (CurrentSeverity > 0 ? -2 : 0);
@@ -42,4 +44,12 @@ public enum SensorCapability
     Jammers,
     Densitometer,
     NeuralActivitySensor,
+}
+
+public enum SensorDetail
+{
+    None,
+    Minimal,
+    Limited,
+    Full,
 }
