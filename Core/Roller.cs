@@ -32,5 +32,5 @@ public class RollResult(int result, int target)
 {
     public bool Success => Effect >= 0;
     public int Result { get; init; } = result;
-    public int Effect { get; init; } = target - result;
+    public int Effect { get; init; } = result - target;
 }

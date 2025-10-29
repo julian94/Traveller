@@ -120,6 +120,8 @@ public class ShipTests
 
     [Test]
     [TestCase(2, false)]
+    [TestCase(7, false)]
+    [TestCase(8, true)]
     [TestCase(12, true)]
     public void SensorsFindNormalShips(int roll, bool shouldSucceed)
     {
