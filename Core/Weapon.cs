@@ -8,11 +8,11 @@ public class Weapon : ICrittable
 
     public required int DamageDice { get; set; }
 
-    public required bool Destructive { get; set; }
+    public bool Destructive { get; set; } = false;
 
-    public required int WeaponBonus { get; set; }
+    public int WeaponBonus { get; set; } = 0;
 
-    public int CurrentSeverity { get; set; }
+    public int CurrentSeverity { get; set; } = 0;
 
-    public RangeBand Range { get; set; }
+    public required RangeBand Range { get; set; }
 }

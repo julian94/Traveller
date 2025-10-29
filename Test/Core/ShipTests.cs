@@ -6,6 +6,7 @@ public class ShipTests
     public void CanCreateShip()
     {
         Ship ship = new() {
+            TechLevel = 12,
             Hull = new(10),
             Armour = new()
             {
@@ -23,6 +24,7 @@ public class ShipTests
                     DamageDice = 2,
                     Destructive = false,
                     WeaponBonus = 2,
+                    Range = RangeBand.Long
                 }
             ]
         };
@@ -113,5 +115,29 @@ public class ShipTests
             Assert.That(defender.Armour.Points, Is.EqualTo(startingArmour - armourLoss));
             Assert.That(defender.Armour.CurrentSeverity, Is.EqualTo(newSeverity));
         }
+    }
+
+
+    [Test]
+    [TestCase(2, false)]
+    [TestCase(12, true)]
+    public void SensorsFindNormalShips(int roll, bool shouldSucceed)
+    {
+        Ship searcher = ShipCatalog.Scout;
+        Ship defender = ShipCatalog.FarTrader;
+
+        Crew sensorOperator = SpacePortBar.Jimbo;
+        var activeRadar = false;
+
+        FakeRoller roller = new([roll]);
+        var foundShip = searcher.Sensors.TryDetect(
+            RangeBand.Medium.ThrustRequired(), 
+            activeRadar, 
+            sensorOperator, 
+            roller, 
+            defender, 
+            searcher.TechLevel);
+
+        Assert.That(foundShip, Is.EqualTo(shouldSucceed));
     }
 }

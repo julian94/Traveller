@@ -20,7 +20,7 @@ public class Sensors : ICrittable
         _ => RangeBand.Distant,
     };
 
-    public bool TryDetect(int distance, bool activeRadar, Crew sensorOperator, IRoller roller, Ship target)
+    public bool TryDetect(int distance, bool activeRadar, Crew sensorOperator, IRoller roller, Ship target, int techLevel)
     {
         var targetIsTooFarAway = MaxRange < distance.GetBand();
         if (targetIsTooFarAway)
@@ -29,7 +29,7 @@ public class Sensors : ICrittable
         }
 
         var radarModifier = activeRadar ? 2 : 0;
-        var totalModifier = Modifier + sensorOperator.SensorSkill + radarModifier + target.SensorProfileModifier;
+        var totalModifier = Modifier + sensorOperator.SensorSkill + radarModifier + target.SensorProfileModifier(techLevel);
 
         var roll = roller.Roll(2, totalModifier, Difficulties.Average);
         return roll.Success;

@@ -7,8 +7,8 @@ public static class WeaponCatalog
         ID = Guid.NewGuid(),
         Name = "Beam Laser",
         DamageDice = 1,
-        Destructive = false,
         WeaponBonus = 4,
+        Range = RangeBand.Medium
     };
 
     public static Weapon Pulse => new()
@@ -16,8 +16,16 @@ public static class WeaponCatalog
         ID = Guid.NewGuid(),
         Name = "Pulse Laser",
         DamageDice = 2,
-        Destructive = false,
         WeaponBonus = 2,
+        Range = RangeBand.Long
+    };
+
+    public static Weapon ParticleBarbette => new()
+    {
+        ID = Guid.NewGuid(),
+        Name = "Particle Barbette",
+        DamageDice = 4,
+        Range = RangeBand.VeryLong
     };
 }
 
@@ -70,6 +78,7 @@ public static class ShipCatalog
 {
     public static Ship Scout => new()
     {
+        TechLevel = 12,
         Hull = new(40),
         Armour = new()
         {
@@ -82,12 +91,30 @@ public static class ShipCatalog
     };
     public static Ship FarTrader => new()
     {
+        TechLevel = 12,
         Hull = new(80),
         Armour = new()
         {
             Points = 2,
         },
         Sensors = SensorsCatalog.Civilian,
+        Weapons = [
+            WeaponCatalog.Pulse,
+            WeaponCatalog.Pulse,
+        ]
+    };
+    public static Ship Harrier => new()
+    {
+        TechLevel = 15,
+        Hull = new(88)
+        {
+            StealhCoating = Stealh.Superior,
+        },
+        Armour = new()
+        {
+            Points = 4,
+        },
+        Sensors = SensorsCatalog.Advanced,
         Weapons = [
             WeaponCatalog.Pulse,
             WeaponCatalog.Pulse,

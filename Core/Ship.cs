@@ -8,7 +8,9 @@ public class Ship
     public required Sensors Sensors { get; set; }
     public required List<Weapon> Weapons { get; set; }
 
-    public int SensorProfileModifier => 0;
+    public required int TechLevel { get; init; }
+
+    public int SensorProfileModifier(int techLevelOfShipTryingToFindThisShip) => Hull.SensorProfile(TechLevel, techLevelOfShipTryingToFindThisShip);
 
     public void SufferAttack(IAttack attack, IRoller roller)
     {
@@ -81,7 +83,7 @@ public class Ship
             }
             else
             {
-                throw new ArgumentOutOfRangeException("roll", roll, "You shouldn't get this number on 2d6.");
+                throw new Exception($"You shouldn't get {roll} number on 2d6.");
             }
         }
     }

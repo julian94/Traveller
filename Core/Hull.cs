@@ -16,6 +16,19 @@ public class Hull : ICrittable
     public int Points { get; set; }
     public int CurrentSeverity { get; set; }
 
+    public bool HeatShielding { get; init; } = false;
+    public Stealh StealhCoating { get; init; } = Stealh.None;
+
+    public int SensorProfile(int techLevelOfThisShip, int techLevelOfOtherShip) =>
+        (HeatShielding ? -2 : 0) +
+        (StealhCoating switch
+        {
+            Stealh.None => 0,
+            Stealh.Standard => -4 - Math.Max(techLevelOfThisShip - techLevelOfOtherShip, 0),
+            Stealh.Superior => -6 - Math.Max(techLevelOfThisShip - techLevelOfOtherShip, 0),
+            _ => throw new NotImplementedException(),
+        });
+
     public int LoseHealth(int damage)
     {
         var oldTreshold = 0;
@@ -44,4 +57,11 @@ public class Hull : ICrittable
         var damage = roller.Roll(CurrentSeverity);
         return LoseHealth(damage);
     }
+}
+
+public enum Stealh
+{
+    None,
+    Standard,
+    Superior,
 }
