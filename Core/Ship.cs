@@ -11,7 +11,7 @@ public class Ship
     public required Sensors Sensors { get; set; }
     public required List<Weapon> Weapons { get; set; }
 
-    public Crittable WeaponStatus { get; set; } = new();
+    public Crittable WeaponStatus { get; init; } = new();
     public CargoHold Cargo { get; init; } = new();
     public required FuelTank Fuel { get; init; }
 
@@ -21,6 +21,7 @@ public class Ship
     public JDrive? JumpDrive { get; init; }
 
     public required Computer Computer { get; init; }
+    public LifeSupport LifeSupport { get; init; } = new();
 
     public required int TechLevel { get; init; }
 
@@ -88,11 +89,11 @@ public class Ship
             }
             else if (roll == 11) // Crew
             {
-                throw new NotImplementedException();
+                LifeSupportCrit(roller);
             }
             else if (roll == 12) // Computer
             {
-                throw new NotImplementedException();
+                ComputerCrit();
             }
             else
             {
@@ -104,7 +105,7 @@ public class Ship
 
     private void WeaponCrit(IRoller roller)
     {
-        var weapon = Weapons.Random();
+        var weapon = Weapons.Random(roller);
 
         WeaponStatus.IncreaseCritSeverity();
 
@@ -261,5 +262,49 @@ public class Ship
                 Hull.SufferCrit(roller);
             }
         }
+    }
+
+    private void LifeSupportCrit(IRoller roller)
+    {
+        LifeSupport.IncreaseCritSeverity();
+        
+        if (LifeSupport.CritSeverity == 1)
+        {
+            var damage = roller.Roll(1);
+            LifeSupport.CrewMembers.Random(roller).LoseHealth(damage);
+        }
+        else if (LifeSupport.CritSeverity == 2)
+        {
+            var hours = roller.Roll(1);
+            LifeSupport.RemainingRoundsOfLifeSupport = hours * 10;
+        }
+        else if (LifeSupport.CritSeverity == 3)
+        {
+            // 1D occupants take 2D damage
+            throw new NotImplementedException();
+        }
+        else if (LifeSupport.CritSeverity == 4)
+        {
+            var rounds = roller.Roll(1);
+            LifeSupport.RemainingRoundsOfLifeSupport = rounds;
+        }
+        else if (LifeSupport.CritSeverity == 5)
+        {
+            foreach (var person in LifeSupport.CrewMembers)
+            {
+                var damage = roller.Roll(3);
+                person.LoseHealth(damage);
+            }
+        }
+        else if (LifeSupport.CritSeverity == 6)
+        {
+            LifeSupport.RemainingRoundsOfLifeSupport = 0;
+        }
+
+    }
+
+    private void ComputerCrit()
+    {
+        Computer.IncreaseCritSeverity();
     }
 }
