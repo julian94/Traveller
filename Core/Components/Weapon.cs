@@ -2,8 +2,6 @@
 
 public class Weapon
 {
-    public required Guid ID { get; set; }
-
     public required string Name { get; set; }
 
     public required int DamageDice { get; set; }
@@ -14,7 +12,11 @@ public class Weapon
 
     public required RangeBand Range { get; set; }
 
+    public required WeaponType WeaponType { get; init; }
+
     public WeaponCondition Condition { get; set; } = WeaponCondition.Working;
+
+    // TODO: Missiles.
 }
 
 public enum WeaponCondition
@@ -23,4 +25,21 @@ public enum WeaponCondition
     Baned,
     Disabled,
     Destroyed,
+}
+
+public enum WeaponType
+{
+    FirmpointFixed,
+    FirmpointTurretSingle,
+    FirmpointBarbette,
+    Fixed,
+    TurretSingle,
+    TurretDouble,
+    TurretTriple,
+    TurretQuad,
+    Barbette,
+    BaySmall,
+    BayMedium,
+    BayLarge,
+    Spinal,
 }

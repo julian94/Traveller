@@ -21,12 +21,12 @@ public class ShipTests
             PowerPlant = new(60),
             Weapons = [
                 new(){
-                    ID = new(),
                     Name = "Pulse Laser",
                     DamageDice = 2,
                     Destructive = false,
                     WeaponBonus = 2,
-                    Range = RangeBand.Long
+                    Range = RangeBand.Long,
+                    WeaponType = WeaponType.TurretSingle,
                 }
             ]
         };

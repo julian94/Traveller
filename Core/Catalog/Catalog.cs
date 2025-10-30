@@ -6,28 +6,28 @@ public static class WeaponCatalog
 {
     public static Weapon Beam => new()
     {
-        ID = Guid.NewGuid(),
         Name = "Beam Laser",
         DamageDice = 1,
         WeaponBonus = 4,
-        Range = RangeBand.Medium
+        Range = RangeBand.Medium,
+        WeaponType = WeaponType.TurretSingle,
     };
 
     public static Weapon Pulse => new()
     {
-        ID = Guid.NewGuid(),
         Name = "Pulse Laser",
         DamageDice = 2,
         WeaponBonus = 2,
-        Range = RangeBand.Long
+        Range = RangeBand.Long,
+        WeaponType = WeaponType.TurretSingle,
     };
 
     public static Weapon ParticleBarbette => new()
     {
-        ID = Guid.NewGuid(),
         Name = "Particle Barbette",
         DamageDice = 4,
-        Range = RangeBand.VeryLong
+        Range = RangeBand.VeryLong,
+        WeaponType = WeaponType.Barbette,
     };
 }
 
