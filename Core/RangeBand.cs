@@ -53,14 +53,14 @@ public enum RangeBand
 
 public static class RangeBandConstants
 {
-    public const int None       = 0;
-    public const int Adjacent   = 1;
-    public const int Close      = 1;
-    public const int Short      = 2;
-    public const int Medium     = 5;
-    public const int Long       = 10;
-    public const int VeryLong   = 25;
-    public const int Distant    = 50;
+    public const int None = 0;
+    public const int Adjacent = 1;
+    public const int Close = 1;
+    public const int Short = 2;
+    public const int Medium = 5;
+    public const int Long = 10;
+    public const int VeryLong = 25;
+    public const int Distant = 50;
 
     /// <summary>
     /// Get how many units of thrust you need to reach a certain distance.

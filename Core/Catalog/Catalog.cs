@@ -35,7 +35,7 @@ public static class SensorsCatalog
 {
     public static Sensors Basic => new()
     {
-        Capabilities = 
+        Capabilities =
             SensorCapability.Lidar &
             SensorCapability.Radar,
         InherentModifier = -4,

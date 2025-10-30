@@ -21,11 +21,11 @@ public class MDrive(int maxThrust) : Crittable, IPowerUser
 
     private int ThrustLostFromDriveDamage => CritSeverity switch
     {
-        <=1 => 0,
+        <= 1 => 0,
         2 => 1,
         3 => 2,
         4 => 3,
-        >=5 => MaxThrust,
+        >= 5 => MaxThrust,
     };
 
     public required int PowerRequirementPerPowerLevel { get; init; }

@@ -25,7 +25,8 @@ public class Ship
 
     public required int TechLevel { get; init; }
 
-    public int SensorProfileModifier(int techLevelOfShipTryingToFindThisShip) => Hull.SensorProfile(TechLevel, techLevelOfShipTryingToFindThisShip);
+    public int SensorProfileModifier(int techLevelOfShipTryingToFindThisShip) =>
+        Hull.SensorProfile(TechLevel, techLevelOfShipTryingToFindThisShip);
 
     public void SufferAttack(IAttack attack, IRoller roller)
     {
@@ -127,7 +128,7 @@ public class Ship
         Hull.IncreaseCritSeverity();
         var damage = roller.Roll(Hull.CritSeverity);
         var result = Hull.LoseHealth(damage);
-        
+
         if (result > 0)
         {
             ResolveCrit(roller, result);
@@ -148,7 +149,7 @@ public class Ship
 
         };
         Armour.LosePoints(armourLoss);
-        
+
         if (Armour.CritSeverity == 5 || Armour.CritSeverity == 6)
         {
             Hull.SufferCrit(roller);
@@ -243,7 +244,7 @@ public class Ship
                 _ => JumpDriveCondition.Destroyed,
             };
 
-        if (JumpDrive.CritSeverity >= 4)
+            if (JumpDrive.CritSeverity >= 4)
             {
                 Hull.SufferCrit(roller);
             }
@@ -267,7 +268,7 @@ public class Ship
     private void LifeSupportCrit(IRoller roller)
     {
         LifeSupport.IncreaseCritSeverity();
-        
+
         if (LifeSupport.CritSeverity == 1)
         {
             var damage = roller.Roll(1);

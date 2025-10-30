@@ -7,11 +7,12 @@ public class ShipTests
     [Test]
     public void CanCreateShip()
     {
-        Ship ship = new() {
+        Ship ship = new()
+        {
             TechLevel = 12,
             Hull = new(10),
             Armour = new(2),
-            Computer = new(5, [.. Warez.StandardSoftware, Warez.JumpControl2], bis: true, fib:false),
+            Computer = new(5, [.. Warez.StandardSoftware, Warez.JumpControl2], bis: true, fib: false),
             Sensors = new()
             {
                 Capabilities = SensorCapability.Lidar & SensorCapability.Radar,
@@ -135,11 +136,11 @@ public class ShipTests
 
         FakeRoller roller = new([roll]);
         var foundShip = searcher.Sensors.TryDetect(
-            RangeBand.Medium.ThrustRequired(), 
-            activeRadar, 
-            sensorOperator, 
-            roller, 
-            defender, 
+            RangeBand.Medium.ThrustRequired(),
+            activeRadar,
+            sensorOperator,
+            roller,
+            defender,
             searcher.TechLevel);
 
         Assert.That(foundShip, Is.EqualTo(shouldSucceed));
