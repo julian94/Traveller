@@ -13,6 +13,7 @@ public class Ship
 
     public Crittable WeaponStatus { get; set; } = new();
     public CargoHold Cargo { get; init; } = new();
+    public required FuelTank Fuel { get; init; }
 
     public required int TechLevel { get; init; }
 
@@ -52,7 +53,7 @@ public class Ship
             }
             else if (roll == 4) // Fuel
             {
-                throw new NotImplementedException();
+                FuelCrit(roller);
             }
             else if (roll == 5) // Weapon
             {
@@ -162,6 +163,32 @@ public class Ship
         if (Cargo.CritSeverity == 5 || Cargo.CritSeverity == 6)
         {
             Hull.SufferCrit(roller);
+        }
+    }
+
+    private void FuelCrit(IRoller roller)
+    {
+        Fuel.IncreaseCritSeverity();
+
+        Fuel.Condition = Fuel.CritSeverity switch
+        {
+            1 => FuelTankCondition.LeakingHourly,
+            2 => FuelTankCondition.LeakingHourly,
+            4 => FuelTankCondition.LeakingHourly,
+            _ => throw new Exception("Should be unreachable"),
+        };
+
+        if (Fuel.CritSeverity == 5)
+        {
+            Hull.SufferCrit(roller);
+        }
+        else if (Fuel.CritSeverity == 6)
+        {
+            var crits = roller.Roll(1);
+            for (var i = 0; i < crits; i++)
+            {
+                Hull.SufferCrit(roller);
+            }
         }
     }
 }
