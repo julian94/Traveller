@@ -80,6 +80,7 @@ public static class ShipCatalog
 {
     public static Ship Scout => new()
     {
+        Computer = new(5, [.. Warez.StandardSoftware, Warez.JumpControl2], bis: true, fib: false),
         TechLevel = 12,
         Hull = new(40),
         Armour = new(4),
@@ -92,6 +93,7 @@ public static class ShipCatalog
     };
     public static Ship FarTrader => new()
     {
+        Computer = new(5, [.. Warez.StandardSoftware, Warez.JumpControl2], bis: true, fib: false),
         TechLevel = 12,
         Hull = new(80),
         Armour = new(2),
@@ -105,6 +107,7 @@ public static class ShipCatalog
     };
     public static Ship Harrier => new()
     {
+        Computer = new(20, [.. Warez.StandardSoftware, Warez.JumpControl2, Warez.Evade1, Warez.FireControl2], bis: false, fib: false),
         TechLevel = 15,
         Hull = new(88)
         {

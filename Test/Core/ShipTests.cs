@@ -11,6 +11,7 @@ public class ShipTests
             TechLevel = 12,
             Hull = new(10),
             Armour = new(2),
+            Computer = new(5, [.. Warez.StandardSoftware, Warez.JumpControl2], bis: true, fib:false),
             Sensors = new()
             {
                 Capabilities = SensorCapability.Lidar & SensorCapability.Radar,

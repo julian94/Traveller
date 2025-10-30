@@ -20,6 +20,8 @@ public class Ship
     public MDrive? MDrive { get; init; }
     public JDrive? JumpDrive { get; init; }
 
+    public required Computer Computer { get; init; }
+
     public required int TechLevel { get; init; }
 
     public int SensorProfileModifier(int techLevelOfShipTryingToFindThisShip) => Hull.SensorProfile(TechLevel, techLevelOfShipTryingToFindThisShip);
