@@ -85,6 +85,7 @@ public static class ShipCatalog
         Armour = new(4),
         Sensors = SensorsCatalog.Military,
         Fuel = new(22),
+        PowerPlant = new(60),
         Weapons = [
             WeaponCatalog.Beam,
         ]
@@ -96,6 +97,7 @@ public static class ShipCatalog
         Armour = new(2),
         Sensors = SensorsCatalog.Civilian,
         Fuel = new(41),
+        PowerPlant = new(75),
         Weapons = [
             WeaponCatalog.Pulse,
             WeaponCatalog.Pulse,
@@ -111,8 +113,9 @@ public static class ShipCatalog
         Armour = new(4),
         Sensors = SensorsCatalog.Advanced,
         Fuel = new(42),
+        PowerPlant = new(260),
         Weapons = [
-            WeaponCatalog.Pulse,
+            WeaponCatalog.ParticleBarbette,
             WeaponCatalog.Pulse,
         ]
     };

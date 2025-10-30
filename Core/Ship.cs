@@ -15,6 +15,11 @@ public class Ship
     public CargoHold Cargo { get; init; } = new();
     public required FuelTank Fuel { get; init; }
 
+    public required PowerPlant PowerPlant { get; init; }
+
+    public MDrive? MDrive { get; init; }
+    public JDrive? JumpDrive { get; init; }
+
     public required int TechLevel { get; init; }
 
     public int SensorProfileModifier(int techLevelOfShipTryingToFindThisShip) => Hull.SensorProfile(TechLevel, techLevelOfShipTryingToFindThisShip);
@@ -49,7 +54,7 @@ public class Ship
             }
             else if (roll == 3) // Power Plant
             {
-                throw new NotImplementedException();
+                PowerPlantCrit(roller);
             }
             else if (roll == 4) // Fuel
             {
@@ -69,7 +74,7 @@ public class Ship
             }
             else if (roll == 8) // M-Drive
             {
-                throw new NotImplementedException();
+                MDriveCrit(roller);
             }
             else if (roll == 9) // Cargo
             {
@@ -77,7 +82,7 @@ public class Ship
             }
             else if (roll == 10) // J-Drive
             {
-                throw new NotImplementedException();
+                JumpDriveCrit(roller);
             }
             else if (roll == 11) // Crew
             {
@@ -186,6 +191,70 @@ public class Ship
         {
             var crits = roller.Roll(1);
             for (var i = 0; i < crits; i++)
+            {
+                Hull.SufferCrit(roller);
+            }
+        }
+    }
+
+    private void PowerPlantCrit(IRoller roller)
+    {
+        PowerPlant.IncreaseCritSeverity();
+
+        if (MDrive is not null)
+        {
+            MDrive.PowerPlantCrits = PowerPlant.CritSeverity switch
+            {
+                1 => DriveEffectFromPowerPlantCrits.LostOneThrust,
+                2 => DriveEffectFromPowerPlantCrits.LostTwoThrust,
+                3 => DriveEffectFromPowerPlantCrits.LostThreeThrust,
+                _ => DriveEffectFromPowerPlantCrits.LostTwoThrust,
+            };
+        }
+
+        if (PowerPlant.CritSeverity == 5)
+        {
+            Hull.SufferCrit(roller);
+        }
+        else if (PowerPlant.CritSeverity == 6)
+        {
+            var crits = roller.Roll(1);
+            for (var i = 0; i < crits; i++)
+            {
+                Hull.SufferCrit(roller);
+            }
+        }
+    }
+
+    private void JumpDriveCrit(IRoller roller)
+    {
+        if (JumpDrive is not null)
+        {
+
+            JumpDrive.IncreaseCritSeverity();
+
+            JumpDrive.Condition = JumpDrive.CritSeverity switch
+            {
+                1 => JumpDriveCondition.Damaged,
+                2 => JumpDriveCondition.Disabled,
+                _ => JumpDriveCondition.Destroyed,
+            };
+
+        if (JumpDrive.CritSeverity >= 4)
+            {
+                Hull.SufferCrit(roller);
+            }
+        }
+    }
+
+    private void MDriveCrit(IRoller roller)
+    {
+        if (MDrive is not null)
+        {
+
+            MDrive.IncreaseCritSeverity();
+
+            if (MDrive.CritSeverity == 6)
             {
                 Hull.SufferCrit(roller);
             }

@@ -17,6 +17,7 @@ public class ShipTests
                 InherentModifier = 0,
             },
             Fuel = new(10),
+            PowerPlant = new(60),
             Weapons = [
                 new(){
                     ID = new(),
