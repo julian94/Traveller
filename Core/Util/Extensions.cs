@@ -3,6 +3,7 @@ namespace Core.Util;
 
 internal static class Extensions
 {
+    // TODO: Make actually random.
     public static Weapon Random(this List<Weapon> list, IRoller roller)
     {
         return list.First();

@@ -17,6 +17,8 @@ public class Weapon
     public WeaponCondition Condition { get; set; } = WeaponCondition.Working;
 
     // TODO: Missiles.
+    // TODO: Turrets.
+    // TODO: AUTO.
 }
 
 public enum WeaponCondition

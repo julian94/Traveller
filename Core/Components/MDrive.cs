@@ -2,6 +2,8 @@
 
 public class MDrive(int maxThrust) : Crittable, IPowerUser
 {
+    // TODO: Add thing that use thrust.
+
     public int MaxThrust { get; init; } = maxThrust;
 
     public DriveEffectFromPowerPlantCrits PowerPlantCrits { get; set; }

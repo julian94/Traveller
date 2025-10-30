@@ -2,6 +2,8 @@
 
 public class JDrive(int maxJump) : Crittable, IPowerUser
 {
+    // TODO: Add astrogation and jump checks.
+
     public int MaxJump { get; init; } = maxJump;
 
     public JumpDriveCondition Condition { get; set; } = JumpDriveCondition.Normal;

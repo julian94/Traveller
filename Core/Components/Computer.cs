@@ -24,6 +24,8 @@ public interface ISoftware
     public bool Active { get; set; }
 }
 
+// TODO: probably refactor
+
 public class SimpleSoftware : ISoftware
 {
     public required string Name { get; init; }

@@ -2,6 +2,8 @@
 
 public class FuelTank(int initialFuelTonnage) : Crittable
 {
+    // TODO: Add stuff that uses fuel.
+
     public int Tons { get; set; } = initialFuelTonnage;
 
     public FuelTankCondition Condition { get; set; } = FuelTankCondition.Working;
