@@ -11,6 +11,9 @@ public class Ship
     public required Sensors Sensors { get; set; }
     public required List<Weapon> Weapons { get; set; }
 
+    public Crittable WeaponStatus { get; set; } = new();
+    public CargoHold Cargo { get; init; } = new();
+
     public required int TechLevel { get; init; }
 
     public int SensorProfileModifier(int techLevelOfShipTryingToFindThisShip) => Hull.SensorProfile(TechLevel, techLevelOfShipTryingToFindThisShip);
@@ -53,7 +56,7 @@ public class Ship
             }
             else if (roll == 5) // Weapon
             {
-                throw new NotImplementedException();
+                WeaponCrit(roller);
             }
             else if (roll == 6) // Armour
             {
@@ -69,7 +72,7 @@ public class Ship
             }
             else if (roll == 9) // Cargo
             {
-                throw new NotImplementedException();
+                CargoCrit(roller);
             }
             else if (roll == 10) // J-Drive
             {
@@ -87,6 +90,26 @@ public class Ship
             {
                 throw new Exception($"You shouldn't get {roll} number on 2d6.");
             }
+        }
+    }
+
+
+    private void WeaponCrit(IRoller roller)
+    {
+        var weapon = Weapons.Random();
+
+        WeaponStatus.IncreaseCritSeverity();
+
+        weapon.Condition = WeaponStatus.CritSeverity switch
+        {
+            1 => WeaponCondition.Baned,
+            2 => WeaponCondition.Disabled,
+            _ => WeaponCondition.Destroyed,
+        };
+
+        if (WeaponStatus.CritSeverity >= 4)
+        {
+            Hull.SufferCrit(roller);
         }
     }
 
@@ -118,6 +141,25 @@ public class Ship
         Armour.LosePoints(armourLoss);
         
         if (Armour.CritSeverity == 5 || Armour.CritSeverity == 6)
+        {
+            Hull.SufferCrit(roller);
+        }
+    }
+
+    private void CargoCrit(IRoller roller)
+    {
+        Cargo.IncreaseCritSeverity();
+
+        Cargo.DestroyCargo(Cargo.CritSeverity switch
+        {
+            1 => 10,
+            2 => roller.Roll(1) * 10,
+            3 => roller.Roll(2) * 10,
+            > 3 => 100,
+            _ => throw new Exception("Should be unreachable"),
+        });
+
+        if (Cargo.CritSeverity == 5 || Cargo.CritSeverity == 6)
         {
             Hull.SufferCrit(roller);
         }

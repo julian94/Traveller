@@ -1,6 +1,6 @@
 ﻿namespace Core.Components;
 
-public abstract class Crittable(int initialValue = 0)
+public class Crittable(int initialValue = 0)
 {
     public const int MinSeverity = 0;
     public const int MaxSeverity = 6;

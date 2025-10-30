@@ -1,6 +1,6 @@
 ﻿namespace Core.Components;
 
-public class Weapon : Crittable
+public class Weapon
 {
     public required Guid ID { get; set; }
 
@@ -13,4 +13,14 @@ public class Weapon : Crittable
     public int WeaponBonus { get; set; } = 0;
 
     public required RangeBand Range { get; set; }
+
+    public WeaponCondition Condition { get; set; } = WeaponCondition.Working;
+}
+
+public enum WeaponCondition
+{
+    Working,
+    Baned,
+    Disabled,
+    Destroyed,
 }
