@@ -8,9 +8,9 @@ public class Computer(int bandwidth, List<ISoftware> software, bool fib = false,
     {
         0 => 0,
         1 => 0,
-        2 => 1,
-        3 => 2,
-        4 => 3,
+        2 => 1 * 5,
+        3 => 2 * 5,
+        4 => 3 * 5,
         _ => MaxBandwidth,
     };
 
