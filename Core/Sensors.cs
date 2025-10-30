@@ -1,16 +1,14 @@
 ﻿namespace Core;
 
-public class Sensors : ICrittable
+public class Sensors : Crittable
 {
-    public int CurrentSeverity { get; set; } = 0;
-
     public required SensorCapability Capabilities { get; init; }
 
     public int InherentModifier { get; init; }
 
-    public int Modifier => InherentModifier - (CurrentSeverity > 0 ? -2 : 0);
+    public int Modifier => InherentModifier - (CritSeverity > 0 ? -2 : 0);
 
-    public RangeBand MaxRange => CurrentSeverity switch
+    public RangeBand MaxRange => CritSeverity switch
     {
         2 => RangeBand.Medium,
         3 => RangeBand.Short,

@@ -1,6 +1,6 @@
 ﻿namespace Core;
 
-public class Weapon : ICrittable
+public class Weapon : Crittable
 {
     public required Guid ID { get; set; }
 
@@ -11,8 +11,6 @@ public class Weapon : ICrittable
     public bool Destructive { get; set; } = false;
 
     public int WeaponBonus { get; set; } = 0;
-
-    public int CurrentSeverity { get; set; } = 0;
 
     public required RangeBand Range { get; set; }
 }

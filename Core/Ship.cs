@@ -38,8 +38,7 @@ public class Ship
         {
             if (roll == 2) // Sensors
             {
-                var newSeverity = Sensors.CurrentSeverity + severity;
-                Sensors.CurrentSeverity = Math.Min(newSeverity, ICrittable.MaxSeverity);
+                Sensors.IncreaseCritSeverity();
             }
             else if (roll == 3) // Power Plant
             {
@@ -90,9 +89,8 @@ public class Ship
 
     private void HullCrit(IRoller roller)
     {
-        Hull.CurrentSeverity++;
-        Hull.CurrentSeverity = Math.Min(Hull.CurrentSeverity, ICrittable.MaxSeverity);
-        var damage = roller.Roll(Hull.CurrentSeverity);
+        Hull.IncreaseCritSeverity();
+        var damage = roller.Roll(Hull.CritSeverity);
         var result = Hull.LoseHealth(damage);
         
         if (result > 0)
@@ -103,24 +101,21 @@ public class Ship
 
     private void ArmourCrit(IRoller roller)
     {
-        Armour.CurrentSeverity++;
-        Armour.CurrentSeverity = Math.Min(Armour.CurrentSeverity, ICrittable.MaxSeverity);
+        Armour.IncreaseCritSeverity();
 
-        if (Armour.CurrentSeverity == 1)
+        var armourLoss = Armour.CritSeverity switch
         {
-            Armour.LosePoints(1);
-        }
-        else if (Armour.CurrentSeverity == 2)
+            1 => 1,
+            2 => roller.D3(),
+            <= 4 => roller.Roll(1),
+            <= 6 => roller.Roll(2),
+            _ => throw new Exception("Should be unreachable"),
+
+        };
+        Armour.LosePoints(armourLoss);
+        
+        if (Armour.CritSeverity == 5 || Armour.CritSeverity == 6)
         {
-            Armour.LosePoints(roller.D3());
-        }
-        else if (Armour.CurrentSeverity == 3 || Armour.CurrentSeverity == 4)
-        {
-            Armour.LosePoints(roller.Roll(1));
-        }
-        else if (Armour.CurrentSeverity == 5 || Armour.CurrentSeverity == 6)
-        {
-            Armour.LosePoints(roller.Roll(2));
             Hull.SufferCrit(roller);
         }
     }

@@ -8,10 +8,7 @@ public class ShipTests
         Ship ship = new() {
             TechLevel = 12,
             Hull = new(10),
-            Armour = new()
-            {
-                Points = 2,
-            },
+            Armour = new(2),
             Sensors = new()
             {
                 Capabilities = SensorCapability.Lidar & SensorCapability.Radar,
@@ -100,7 +97,7 @@ public class ShipTests
     public void ArmourCritsLowerArmourCorrectly(int newSeverity, int armourLoss)
     {
         Ship defender = ShipCatalog.Scout;
-        defender.Armour.CurrentSeverity = newSeverity - 1;
+        defender.Armour = new(4, newSeverity - 1);
         var startingArmour = defender.Armour.Points;
 
         defender.SufferAttack(new FakeAttack()
@@ -113,7 +110,7 @@ public class ShipTests
         using (Assert.EnterMultipleScope())
         {
             Assert.That(defender.Armour.Points, Is.EqualTo(startingArmour - armourLoss));
-            Assert.That(defender.Armour.CurrentSeverity, Is.EqualTo(newSeverity));
+            Assert.That(defender.Armour.CritSeverity, Is.EqualTo(newSeverity));
         }
     }
 

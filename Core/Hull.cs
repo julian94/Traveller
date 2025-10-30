@@ -1,6 +1,6 @@
 ﻿namespace Core;
 
-public class Hull : ICrittable
+public class Hull : Crittable
 {
     public Hull(int points)
     {
@@ -14,8 +14,6 @@ public class Hull : ICrittable
     }
 
     public int Points { get; set; }
-    public int CurrentSeverity { get; set; }
-
     public bool HeatShielding { get; init; } = false;
     public Stealh StealhCoating { get; init; } = Stealh.None;
 
@@ -52,9 +50,8 @@ public class Hull : ICrittable
 
     public int SufferCrit(IRoller roller)
     {
-        CurrentSeverity++;
-        CurrentSeverity = Math.Min(CurrentSeverity, 6);
-        var damage = roller.Roll(CurrentSeverity);
+        IncreaseCritSeverity();
+        var damage = roller.Roll(CritSeverity);
         return LoseHealth(damage);
     }
 }

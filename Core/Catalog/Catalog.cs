@@ -80,10 +80,7 @@ public static class ShipCatalog
     {
         TechLevel = 12,
         Hull = new(40),
-        Armour = new()
-        {
-            Points = 4,
-        },
+        Armour = new(4),
         Sensors = SensorsCatalog.Military,
         Weapons = [
             WeaponCatalog.Beam,
@@ -93,10 +90,7 @@ public static class ShipCatalog
     {
         TechLevel = 12,
         Hull = new(80),
-        Armour = new()
-        {
-            Points = 2,
-        },
+        Armour = new(2),
         Sensors = SensorsCatalog.Civilian,
         Weapons = [
             WeaponCatalog.Pulse,
@@ -110,10 +104,7 @@ public static class ShipCatalog
         {
             StealhCoating = Stealh.Superior,
         },
-        Armour = new()
-        {
-            Points = 4,
-        },
+        Armour = new(4),
         Sensors = SensorsCatalog.Advanced,
         Weapons = [
             WeaponCatalog.Pulse,

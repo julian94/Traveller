@@ -1,9 +1,8 @@
 ﻿namespace Core;
 
-public class Armour : ICrittable
+public class Armour(int initialPoints, int initialCritSeverity = 0) : Crittable(initialCritSeverity)
 {
-    public required int Points { get; set; }
-    public int CurrentSeverity { get; set; }
+    public int Points { get; private set; } = initialPoints;
 
     public void LosePoints(int points) => Points = Math.Max(Points - points, 0);
 }
