@@ -1,4 +1,6 @@
-﻿namespace Test.Core;
+﻿using Core.Components;
+
+namespace Test.Core;
 
 public class ShipTests
 {

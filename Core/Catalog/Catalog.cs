@@ -1,4 +1,6 @@
-﻿namespace Core.Catalog;
+﻿using Core.Components;
+
+namespace Core.Catalog;
 
 public static class WeaponCatalog
 {

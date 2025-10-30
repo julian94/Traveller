@@ -1,4 +1,4 @@
-﻿namespace Core;
+﻿namespace Core.Components;
 
 public interface IPowerUser
 {

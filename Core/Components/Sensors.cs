@@ -1,4 +1,6 @@
-﻿namespace Core;
+﻿using Core.Util;
+
+namespace Core.Components;
 
 public class Sensors : Crittable
 {

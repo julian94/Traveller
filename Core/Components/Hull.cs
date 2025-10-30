@@ -1,4 +1,6 @@
-﻿namespace Core;
+﻿using Core.Util;
+
+namespace Core.Components;
 
 public class Hull : Crittable
 {
@@ -19,13 +21,13 @@ public class Hull : Crittable
 
     public int SensorProfile(int techLevelOfThisShip, int techLevelOfOtherShip) =>
         (HeatShielding ? -2 : 0) +
-        (StealhCoating switch
+        StealhCoating switch
         {
             Stealh.None => 0,
             Stealh.Standard => -4 - Math.Max(techLevelOfThisShip - techLevelOfOtherShip, 0),
             Stealh.Superior => -6 - Math.Max(techLevelOfThisShip - techLevelOfOtherShip, 0),
             _ => throw new NotImplementedException(),
-        });
+        };
 
     public int LoseHealth(int damage)
     {
@@ -43,7 +45,7 @@ public class Hull : Crittable
 
         if (Points < 0) return 0;
 
-        return (newTreshold - oldTreshold);
+        return newTreshold - oldTreshold;
     }
 
     private List<int> CritTresholds { get; init; }

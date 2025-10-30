@@ -1,4 +1,4 @@
-﻿namespace Core;
+﻿namespace Core.Util;
 
 public class Roller : IRoller
 {

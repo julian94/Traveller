@@ -1,4 +1,4 @@
-﻿namespace Core;
+﻿namespace Core.Components;
 
 public class Armour(int initialPoints, int initialCritSeverity = 0) : Crittable(initialCritSeverity)
 {

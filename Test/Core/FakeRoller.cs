@@ -1,4 +1,6 @@
-﻿namespace Test.Core;
+﻿using Core.Util;
+
+namespace Test.Core;
 internal class FakeRoller(List<int> rolls) : IRoller
 {
     private int _roll;

@@ -1,4 +1,4 @@
-﻿namespace Core;
+﻿namespace Core.Components;
 
 public abstract class Crittable(int initialValue = 0)
 {

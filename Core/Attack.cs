@@ -1,4 +1,7 @@
-﻿namespace Core;
+﻿using Core.Components;
+using Core.Util;
+
+namespace Core;
 
 public class Attack : IAttack
 {
