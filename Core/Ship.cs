@@ -15,6 +15,10 @@ public class Ship
     public CargoHold Cargo { get; init; } = new();
     public required FuelTank Fuel { get; init; }
 
+    public required PowerPlant PowerPlant { get; init; }
+
+    public MDrive? MDrive { get; init; }
+
     public required int TechLevel { get; init; }
 
     public int SensorProfileModifier(int techLevelOfShipTryingToFindThisShip) => Hull.SensorProfile(TechLevel, techLevelOfShipTryingToFindThisShip);
@@ -49,7 +53,7 @@ public class Ship
             }
             else if (roll == 3) // Power Plant
             {
-                throw new NotImplementedException();
+                PowerPlantCrit(roller);
             }
             else if (roll == 4) // Fuel
             {
@@ -183,6 +187,35 @@ public class Ship
             Hull.SufferCrit(roller);
         }
         else if (Fuel.CritSeverity == 6)
+        {
+            var crits = roller.Roll(1);
+            for (var i = 0; i < crits; i++)
+            {
+                Hull.SufferCrit(roller);
+            }
+        }
+    }
+
+    private void PowerPlantCrit(IRoller roller)
+    {
+        PowerPlant.IncreaseCritSeverity();
+
+        if (MDrive is not null)
+        {
+            MDrive.PowerPlantCrits = PowerPlant.CritSeverity switch
+            {
+                1 => DriveEffectFromPowerPlantCrits.LostOneThrust,
+                2 => DriveEffectFromPowerPlantCrits.LostTwoThrust,
+                3 => DriveEffectFromPowerPlantCrits.LostThreeThrust,
+                _ => DriveEffectFromPowerPlantCrits.LostTwoThrust,
+            };
+        }
+
+        if (PowerPlant.CritSeverity == 5)
+        {
+            Hull.SufferCrit(roller);
+        }
+        else if (PowerPlant.CritSeverity == 6)
         {
             var crits = roller.Roll(1);
             for (var i = 0; i < crits; i++)
