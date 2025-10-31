@@ -1,8 +1,4 @@
 services:
   traveller:
-    image: traveller:v0
+    image: juliansl/traveller:latest
     build: .
-    volumes:
-      - ./appSettings.json:/app/appSettings.json:ro
-    restart: 'unless-stopped'
-    network_mode: host
